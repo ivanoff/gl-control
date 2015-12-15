@@ -8,7 +8,7 @@ var https  = require('https'),
     fs     = require("fs"),
     config = require('config'),
     moment = require('moment'),
-    dialog = require('./dialog');
+    dialog = require('./lib/dialog');
 
 var employeeId = process.env.CONTROL_EMPLOYEEID || config.get( 'employeeId' ), // Id to control
     interval   = process.env.CONTROL_INTERVAL   || config.get( 'interval' )   || 1000 * 60 * 2, // interval to check, ms
@@ -47,7 +47,7 @@ setInterval(function() {
 
 // checking if current date is using in params
   if( !p[dateYMD] ) p[dateYMD] = { };
-  if( !p[dateYMD][employeeId] ) p[dateYMD][employeeId] = { dateTotal : 0 };
+  if( !p[dateYMD][employeeId] ) p[dateYMD][employeeId] = { expiredAlertFlag : 0 };
 
   var httpsOptions = {
     port: 443,
@@ -65,8 +65,8 @@ setInterval(function() {
       var reTotal = /Total for the period: (\d{2}):(\d{2})/;
       var matchTotal = reTotal.exec(str);
       console.log( matchTotal[1] + ':' + matchTotal[2] + ' daily worked hours' );
-      if( matchTotal[1] >= parseInt( hourLimit ) && !p[dateYMD][employeeId].dateTotal ) {
-        p[dateYMD][employeeId].dateTotal = 1;
+      if( matchTotal[1] >= parseInt( hourLimit ) && !p[dateYMD][employeeId].expiredAlertFlag ) {
+        p[dateYMD][employeeId].expiredAlertFlag = 1;
         dialog.info( 'ding-ding-ding!' );
       }
 // checking in-out  
