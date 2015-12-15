@@ -65,7 +65,7 @@ setInterval(function() {
       var reTotal = /Total for the period: (\d{2}):(\d{2})/;
       var matchTotal = reTotal.exec(str);
       console.log( matchTotal[1] + ':' + matchTotal[2] + ' daily worked hours' );
-      if( matchTotal[1] >= hourLimit && !p[dateYMD][employeeId].dateTotal ) {
+      if( matchTotal[1] >= parseInt( hourLimit ) && !p[dateYMD][employeeId].dateTotal ) {
         p[dateYMD][employeeId].dateTotal = 1;
         dialog.info( 'ding-ding-ding!' );
       }
