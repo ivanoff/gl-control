@@ -1,0 +1,16 @@
+{
+
+  "employeeId" : "5287",    // Id to control
+  "hourLimit"  : "9",       // max limit in hours per day
+  "homeNumber" : "L-O",     // home sector name
+  "interval"   : "120000",  // interval to check, ms
+  "storeFile"  : "./control.json",  // file to store information
+
+  "officetimeHost" : "portal.link",         // host
+  "officetimePath" : "/path/to/officetime", // path
+
+// auth and cookie info ( chrome - officetime - F12 - Copy as cURL on index_new -- is so useful )
+  "authorization": "Basic ......",
+  "cookie": "__uvt=; PGBLGI=......; PHPSESSID=..... e.t.c."
+
+}
