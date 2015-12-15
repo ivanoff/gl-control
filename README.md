@@ -1,4 +1,4 @@
-# Entries and time control
+# Entries and time control at GL
 
 
 ## Install
