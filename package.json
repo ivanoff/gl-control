@@ -1,18 +1,29 @@
 {
   "name": "control",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "description": "Controls my entries and time at GL",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node_modules/.bin/supervisor app",
+    "test": "node_modules/.bin/mocha -w"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ivanoff/gl-control/tree/master"
+  },
+  "keywords": [ 
+    "Control Time",
+    "Time Control",
+    "Timecontrol",
+    "GL"
+  ],
+  "author": "Dimitry Ivanov <2@ivanoff.org.ua>",
   "license": "ISC",
   "dependencies": {
     "config": "^1.17.1",
     "fs": "0.0.2",
     "https": "^1.0.0",
+    "mocha": "^2.3.3",
     "moment": "^2.10.6"
   }
 }
