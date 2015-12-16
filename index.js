@@ -50,7 +50,7 @@ setInterval(function() {
   if( !p[dateYMD] ) p[dateYMD] = { };
   if( !p[dateYMD][employeeId] ) p[dateYMD][employeeId] = { expiredAlertFlag : 0 };
 
-  var analyze = require('./lib/analyze')( employeeId, hourLimit, p[dateYMD] );
+  var analyze = require('./lib/analyze')( hourLimit, p[dateYMD][employeeId] );
 
   var httpsOptions = {
     port: 443,
