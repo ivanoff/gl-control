@@ -2,13 +2,13 @@
 
 var assert = require('assert');
 
-var limit = 9;
+var workingHoursLimit = 9;
 var analyze, params, str;
 
 describe('analyze testing', function () {
 
   describe('check totalTime', function () {
-    before (function() { analyze = require( '../lib/analyze' )( limit, params = {} ) });
+    before (function() { analyze = require( '../lib/analyze' )( workingHoursLimit, params = {} ) });
     after  (function() { analyze = null });
     it('Check totalTime for 01:10', function ( done ) {
       analyze.totalTime( '<div class="th td5">Total for the period: 01:10</div>', function( e, workingHours ) {
@@ -49,7 +49,7 @@ describe('analyze testing', function () {
   });
 
   describe('expiredAlert in usual case', function () {
-    before (function() { analyze = require( '../lib/analyze' )( limit, params = {} ) });
+    before (function() { analyze = require( '../lib/analyze' )( workingHoursLimit, params = {} ) });
     after  (function() { analyze = null });
     it('Check expiredAlert, then 2 hours spent', function ( done ) {
       analyze.expiredAlert( '<div class="th td5">Total for the period: 02:00</div>', function( e, expired ) {
@@ -84,7 +84,7 @@ describe('analyze testing', function () {
   });
 
   describe('expiredAlert in case of late runninig', function () {
-    before (function() { analyze = require( '../lib/analyze' )( limit, params = {} ) });
+    before (function() { analyze = require( '../lib/analyze' )( workingHoursLimit, params = {} ) });
     after  (function() { analyze = null });
     it('Check expiredAlert, then more than 9 hours spent', function (done) {
       analyze.expiredAlert( '<div class="th td5">Total for the period: 09:31</div>', function( e, expired ) {
@@ -107,7 +107,7 @@ describe('analyze testing', function () {
   });
       
   describe('expiredAlert in case of luck clock', function () {
-    before (function() { analyze = require( '../lib/analyze' )( limit, params = {} ) });
+    before (function() { analyze = require( '../lib/analyze' )( workingHoursLimit, params = {} ) });
     after  (function() { analyze = null });
     it('Check expiredAlert, then 2 hours spent', function ( done ) {
       analyze.expiredAlert( '<div class="th td5">Total for the period: 02:00</div>', function( e, expired ) {
@@ -148,7 +148,7 @@ describe('analyze testing', function () {
   });
 
   describe('expiredAlert in usual case of expiredAlert is true', function () {
-    before (function() { analyze = require( '../lib/analyze' )( limit, params = { expiredAlertFlag: 1 } ) });
+    before (function() { analyze = require( '../lib/analyze' )( workingHoursLimit, params = { expiredAlertFlag: 1 } ) });
     after  (function() { analyze = null });
     it('Check expiredAlert, then 2 hours spent', function ( done ) {
       analyze.expiredAlert( '<div class="th td5">Total for the period: 02:00</div>', function( e, expired ) {
@@ -183,7 +183,7 @@ describe('analyze testing', function () {
   });
 
   describe('analyze newMovements', function () {
-    before (function() { str = ''; analyze = require( '../lib/analyze' )( limit, params = {} ) });
+    before (function() { str = ''; analyze = require( '../lib/analyze' )( workingHoursLimit, params = {} ) });
     after  (function() { analyze = null });
     it('Check empty movies', function ( done ) {
       analyze.newMovements( str, function( e, move ) {
