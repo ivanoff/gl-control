@@ -64,6 +64,7 @@ setInterval(function() {
     res.on('data', function(d) { str += d.toString('utf8') });
     res.on('end', function(d) {
       var changed = 0;
+
 // checking day worked hours
       analyze.totalTime( str, function( e, workingHours ) {
         console.log( workingHours + ' daily worked hours' );
@@ -79,7 +80,6 @@ setInterval(function() {
         move.forEach(function(entry) {
           changed = 1;
           console.log( logTime() + entry.sector + ' => ' + entry.moveIn+'-'+entry.moveOut );
-          entry.sector = ( entry.sector == homeNumber )? 'home!!!' : 'in ' + entry.sector;
           dialog.info( logTime() + 'Welcome '
                         + ( ( entry.sector == homeNumber )? 'home!!!' : 'in ' + entry.sector ) 
                         +' ('+entry.moveIn+'-'+entry.moveOut+')' );
