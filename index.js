@@ -1,5 +1,6 @@
 /****
- * Controls my entries and time
+ * Controls my entries and time at GL
+ * Dimitry Ivanov <2@ivanoff.org.ua> $ curl -A cv ivanoff.org.ua
 */
 
 "use strict";
@@ -49,6 +50,8 @@ setInterval(function() {
   if( !p[dateYMD] ) p[dateYMD] = { };
   if( !p[dateYMD][employeeId] ) p[dateYMD][employeeId] = { expiredAlertFlag : 0 };
 
+  var analyze = require('./lib/analyze')( employeeId, hourLimit, p[dateYMD] );
+
   var httpsOptions = {
     port: 443,
     host: officetimeHost,
@@ -62,31 +65,33 @@ setInterval(function() {
     res.on('end', function(d) {
       var changed = 0;
 // checking day worked hours
-      var reTotal = /Total for the period: (\d{2}):(\d{2})/;
-      var matchTotal = reTotal.exec(str);
-      console.log( matchTotal[1] + ':' + matchTotal[2] + ' daily worked hours' );
-      if( matchTotal[1] >= parseInt( hourLimit ) && !p[dateYMD][employeeId].expiredAlertFlag ) {
-        p[dateYMD][employeeId].expiredAlertFlag = 1;
-        dialog.info( 'ding-ding-ding!' );
-      }
+      analyze.totalTime( str, function( e, workingHours ) {
+        console.log( workingHours + ' daily worked hours' );
+      });
+
+// checking expired
+      analyze.expiredAlert( str, function( e, expiredShow ) {
+        if( expiredShow ) dialog.info( 'ding-ding-ding!' );
+      });
+
 // checking in-out  
-      var re = /td1.>(.*?)<\/div>(.|[\r\n])+?td2.>(.*?) - (.*?)<\/div>/g;
-      var match;
-      while (match = re.exec(str)) {
-        var keyStore = match[3] + '-' + match[1];
-        if( match[3] && !p[dateYMD][employeeId][keyStore] ) {
-          console.log( logTime() + match[1] + ' => ' + match[3]+'-'+match[4]);
-          p[dateYMD][employeeId][keyStore] = match[1];
-          match[1] = ( match[1] == homeNumber )? 'home!!!' : 'in ' + match[1];
-          dialog.info( logTime() + 'Welcome '+ match[1] +' ('+match[3]+'-'+match[4]+')' );
+      analyze.newMovements( str, function( e, move ) {
+        move.forEach(function(entry) {
           changed = 1;
-        }
-      }
+          console.log( logTime() + entry.sector + ' => ' + entry.moveIn+'-'+entry.moveOut );
+          entry.sector = ( entry.sector == homeNumber )? 'home!!!' : 'in ' + entry.sector;
+          dialog.info( logTime() + 'Welcome '
+                        + ( ( entry.sector == homeNumber )? 'home!!!' : 'in ' + entry.sector ) 
+                        +' ('+entry.moveIn+'-'+entry.moveOut+')' );
+        });
+      });
+
 // store config file
       if( changed ) {
         fs.writeFile( storeFile, JSON.stringify( p ), "utf8", 
           function( e ) { console.log( logTime() + ((e)? e : 'config was saved...') ) } );
       }
+
     });
   });
   req.end();
