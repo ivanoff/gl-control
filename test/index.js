@@ -182,6 +182,17 @@ describe('analyze testing', function () {
     });
   });
 
+  describe('expiredAlert in unknown case of expiredAlert', function () {
+    before (function() { analyze = require( '../lib/analyze' )( workingHoursLimit, params = {} ) });
+    after  (function() { analyze = null });
+    it('Check expiredAlert, then no hours spent', function ( done ) {
+      analyze.expiredAlert( '<div class="th td5">Total for the period: unknown</div>', function( e, expired ) {
+        assert.equal( expired, undefined );
+        done();
+      })
+    });
+  });
+
   describe('analyze newMovements', function () {
     before (function() { str = ''; analyze = require( '../lib/analyze' )( workingHoursLimit, params = {} ) });
     after  (function() { analyze = null });
